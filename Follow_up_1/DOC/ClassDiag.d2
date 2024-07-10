@@ -1,0 +1,64 @@
+
+
+M5STACK :{
+
+    shape:square
+    C++ behavior:{shape:text}
+}
+M5:{
+}
+GRBL:{
+}
+
+
+
+Conveyor:{
+    Stepper Motor
+    Belt:{
+        shape:Step  
+    }
+    
+    Motion Gate :{
+        PIR:{
+            Motion Sensor:{shape:text 
+            }
+        }
+    }
+    NFC Gate :{
+        RFID:{
+    
+            NFC Sensor:{shape:text 
+            }
+        }
+    }
+    Servo Motor:{
+        shape:callout
+    }
+    Seperation Gate:{
+        door 1:{shape:text}
+        door 2:{shape:text}
+        door 3:{shape:text}
+    }
+    Servo Motor:{
+        shape:callout
+    }
+    Stepper Motor -> Belt : Rotation
+    Servo Motor -> Seperation Gate.door 1
+    Servo Motor -> Seperation Gate.door 2 : choose Exit Door
+    Servo Motor -> Seperation Gate.door 3
+}
+
+GoPlus2:{
+}
+
+M5STACK <-> GRBL
+M5STACK <-> GoPlus2
+M5STACK <-> M5
+
+Conveyor.NFC Gate.RFID <- M5 : I2C Port A (ID UID byte)
+Conveyor.Motion Gate.PIR <- M5 : I/O Port B (detection Int(0|1))
+
+
+GRBL -> Conveyor.Stepper Motor : DC input Port X(4D Vector x y z Rot)
+GoPlus2 -> Conveyor.Servo Motor : DC input Port 1 (position int)
+
